@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.countdown-footer-gradient {
+  @apply bg-gradient-to-t from-[#30cfd0] to-[#330867] -z-10 blur-2xl absolute -bottom-[calc(24px+6rem)] left-[calc(50%-8rem)] h-64 w-64  opacity-15 dark:opacity-25 rounded-full;
+}

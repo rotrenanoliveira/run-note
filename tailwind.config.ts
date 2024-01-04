@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        'runnote-gray-900': '#111315',
+        'runnote-gray-700': '#1D1D1D',
+        'runnote-gray-50': '#FCFCFC',
+        'runnote-red': '#D42849',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
