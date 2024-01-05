@@ -13,6 +13,8 @@ const config: Config = {
         'runnote-gray-700': '#1D1D1D',
         'runnote-gray-50': '#FCFCFC',
         'runnote-red': '#D42849',
+        'runnote-green-50': '#BCE7B7',
+        'runnote-green-300': '#30A46C',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

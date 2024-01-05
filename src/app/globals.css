@@ -29,3 +29,11 @@ body {
 .countdown-footer-gradient {
   @apply bg-gradient-to-t from-[#30cfd0] to-[#330867] -z-10 blur-2xl absolute -bottom-[calc(24px+6rem)] left-[calc(50%-8rem)] h-64 w-64  opacity-15 dark:opacity-25 rounded-full;
 }
+
+.countdown-timers-input[type="number"]::-webkit-inner-spin-button,
+.countdown-timers-input[type="number"]::-webkit-outer-spin-button,
+.countdown-timers-input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield; /* Firefox */
+  margin: 0;
+}
