@@ -44,13 +44,13 @@ export function Countdown() {
   return (
     <div className="w-80 p-4 rounded-2xl">
       <div className="flex flex-col items-center justify-center">
-        <p className="text-5xl lg:text-7xl lg:h-24 flex items-center justify-center">
+        <p className="text-7xl lg:text-9xl lg:h-36 flex items-center justify-center">
           {/* className="text-5xl  bg-transparent size-16 lg:size-24 text-center countdown-timers-input" */}
           {minutesAmount.toString().padStart(2, '0')}:{secondsAmount.toString().padStart(2, '0')}
         </p>
 
-        <button className="mt-4 p-2 rounded-full border-[1px] border-[#F7CE78] hover:border-[#DEA632] dark:border-[#F7CE78]/[0.5] bg-[#FFE3A9]/[0.15] dark:bg-[#FFE3A9]/[0.25] transition-colors duration-300">
-          <Pause className="fill-[#DEA632] dark:fill-[#F7CE78]" />
+        <button className="mt-4 p-2 lg:p-3 rounded-full border-[1px] border-[#F7CE78] hover:border-[#DEA632] dark:border-[#F7CE78]/[0.5] bg-[#FFE3A9]/[0.15] dark:bg-[#FFE3A9]/[0.25] transition-colors duration-300">
+          <Pause className="fill-[#DEA632] dark:fill-[#F7CE78] lg:size-10" />
         </button>
       </div>
     </div>
