@@ -4,23 +4,29 @@ import { useContext, useEffect, useState } from 'react'
 import { CountdownContext } from '../_context/countdown'
 import { Pause } from '@/components/ui/icons'
 
-export function Countdown() {
-  const {
-    countdown: { countdown, hasActiveCountdown },
-    removeCountdown,
-  } = useContext(CountdownContext)
+interface CountdownProps {
+  countdownDivRef: React.RefObject<HTMLDivElement>
+}
+
+export function Countdown({ countdownDivRef }: CountdownProps) {
+  const { countdown, finishCountdown } = useContext(CountdownContext)
+
+  const hasCountdown = countdown !== null
+  const hasActiveCountdown = hasCountdown && countdown.hasActiveCountdown
 
   const [minutesAmount, setMinutesAmount] = useState<number>(0)
   const [secondsAmount, setSecondsAmount] = useState<number>(0)
 
   useEffect(() => {
-    if (hasActiveCountdown === true && countdown !== null) {
+    if (hasActiveCountdown === true && countdown.countdown !== null) {
+      const countdownOn = countdown.countdown
+
       setMinutesAmount(minutesAmount)
       setSecondsAmount(secondsAmount)
 
       const interval = setInterval(() => {
         const now = new Date().getTime()
-        const distance = new Date(countdown.startDate).getTime() + countdown.totalSeconds * 1000 - now
+        const distance = new Date(countdownOn.startDate).getTime() + countdownOn.totalSeconds * 1000 - now
 
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((distance % (1000 * 60)) / 1000)
@@ -28,21 +34,21 @@ export function Countdown() {
         setMinutesAmount(minutes)
         setSecondsAmount(seconds)
 
-        const diff = now - new Date(countdown.startDate).getTime()
+        const diff = now - new Date(countdownOn.startDate).getTime()
 
-        if (diff >= countdown.totalSeconds * 1000) {
+        if (diff >= countdownOn.totalSeconds * 1000) {
           clearInterval(interval)
           setMinutesAmount(0)
           setSecondsAmount(0)
 
-          removeCountdown()
+          finishCountdown()
         }
       }, 1000)
     }
-  }, [minutesAmount, secondsAmount, hasActiveCountdown, countdown, removeCountdown])
+  }, [minutesAmount, secondsAmount, hasActiveCountdown, countdown, finishCountdown])
 
   return (
-    <div className="w-80 p-4 rounded-2xl">
+    <div ref={countdownDivRef} className="w-80 lg:w-fit p-4 lg:p-8 rounded-2xl">
       <div className="flex flex-col items-center justify-center">
         <p className="text-7xl lg:text-9xl lg:h-36 flex items-center justify-center">
           {/* className="text-5xl  bg-transparent size-16 lg:size-24 text-center countdown-timers-input" */}

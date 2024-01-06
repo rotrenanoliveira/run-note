@@ -37,3 +37,37 @@ body {
   -moz-appearance: textfield; /* Firefox */
   margin: 0;
 }
+
+@keyframes countdown-close-form-animation {
+  0% {
+    transform: translateY(0%);
+    @apply opacity-100 bg-runnote-gray-50/15 dark:bg-runnote-gray-900;
+  }
+  100% {
+    transform: translateY(100%);
+    filter: blur(8px);
+    scale: 0.75;
+    @apply opacity-0 hidden;
+  }
+}
+
+@keyframes countdown-open-form-animation {
+  0% {
+    @apply hidden opacity-0;
+    scale: 0.75;
+    filter: blur(8px);
+    transform: translateY(100%);
+  }
+  100% {
+    @apply block opacity-100;
+    transform: translateY(0);
+  }
+}
+
+.countdown-close-form-animation {
+  animation: countdown-close-form-animation 1.5s ease-in-out forwards;
+}
+
+.countdown-open-form-animation {
+  animation: countdown-open-form-animation 2.5s ease-in-out forwards;
+}

@@ -17,9 +17,9 @@ type Countdown =
     }
 
 interface CountdownContextType {
-  countdown: Countdown
+  countdown: Countdown | null
   startCountdown: (totalSeconds: number) => void
-  removeCountdown: () => void
+  finishCountdown: () => void
 }
 
 export const CountdownContext = React.createContext<CountdownContextType>({} as CountdownContextType)
@@ -29,10 +29,7 @@ interface CountdownProviderProps {
 }
 
 export function CountdownProvider({ children }: CountdownProviderProps) {
-  const [countdown, setCountdown] = React.useState<Countdown>({
-    hasActiveCountdown: false,
-    countdown: null,
-  })
+  const [countdown, setCountdown] = React.useState<Countdown | null>(null)
 
   const startCountdown = useCallback((totalSeconds: number) => {
     setCountdown({
@@ -43,7 +40,7 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
     localStorage.setItem('@runnote:countdown', JSON.stringify({ startDate: new Date(), totalSeconds }))
   }, [])
 
-  const removeCountdown = useCallback(() => {
+  const finishCountdown = useCallback(() => {
     setCountdown({
       hasActiveCountdown: false,
       countdown: null,
@@ -57,24 +54,22 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
 
     if (countdownOnLocalStorage !== null) {
       const { startDate, totalSeconds } = JSON.parse(countdownOnLocalStorage)
-      // const diff = differenceInSeconds(new Date(startDate), new Date())
 
-      // if (diff <= 0) {
-      //   removeCountdown()
-      // }
+      const diff = differenceInSeconds(new Date(), new Date(startDate))
+      if (diff <= 0) finishCountdown()
 
       setCountdown({
         hasActiveCountdown: true,
         countdown: { startDate: new Date(startDate), totalSeconds: Number(totalSeconds) },
       })
     }
-  }, [startCountdown, removeCountdown])
+  }, [startCountdown, finishCountdown])
 
   // TODO: implement
   // function stopCountdown() {}
 
   return (
-    <CountdownContext.Provider value={{ countdown, startCountdown, removeCountdown }}>
+    <CountdownContext.Provider value={{ countdown, startCountdown, finishCountdown }}>
       {children}
     </CountdownContext.Provider>
   )

@@ -4,7 +4,11 @@ import { useContext } from 'react'
 import { CountdownContext } from '../_context/countdown'
 import { Play } from '@/components/ui/icons'
 
-export function CountdownForm() {
+interface CountdownFormProps {
+  countdownFormRef: React.RefObject<HTMLDivElement>
+}
+
+export function CountdownForm({ countdownFormRef }: CountdownFormProps) {
   const { startCountdown } = useContext(CountdownContext)
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -21,10 +25,11 @@ export function CountdownForm() {
     }
 
     startCountdown(totalSeconds)
+    event.currentTarget.reset()
   }
 
   return (
-    <div className="w-80 p-4 rounded-2xl">
+    <div ref={countdownFormRef} className="w-80 lg:w-fit p-4 lg:p-8 rounded-2xl">
       <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center">
         <div className="flex gap items-center justify-center text-7xl lg:text-9xl">
           <input
