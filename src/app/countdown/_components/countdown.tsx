@@ -14,7 +14,7 @@ export function Countdown() {
   const [secondsAmount, setSecondsAmount] = useState<number>(0)
 
   useEffect(() => {
-    if (hasActiveCountdown !== false) {
+    if (hasActiveCountdown === true && countdown !== null) {
       setMinutesAmount(minutesAmount)
       setSecondsAmount(secondsAmount)
 
