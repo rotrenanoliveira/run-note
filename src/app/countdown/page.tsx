@@ -31,6 +31,7 @@ export default function CountdownPage() {
       countdownFormRef.current?.classList.remove('hidden')
       countdownFormRef.current?.classList.add('countdown-open-form-animation')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasActiveCountdown])
 
   return (

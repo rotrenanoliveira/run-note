@@ -69,5 +69,5 @@ body {
 }
 
 .countdown-open-form-animation {
-  animation: countdown-open-form-animation 2.5s ease-in-out forwards;
+  animation: countdown-open-form-animation 1s ease-in-out forwards;
 }
