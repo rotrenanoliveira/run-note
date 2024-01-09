@@ -2,62 +2,107 @@
 
 import { useContext, useEffect, useState } from 'react'
 import { CountdownContext } from '../_context/countdown'
-import { Pause } from '@/components/ui/icons'
+import { Pause, Play, ResetTimer, Stop } from '@/components/ui/icons'
+import { getTimers } from '../_util/get-timers'
+import { differenceInSeconds } from '@/util/date'
 
 interface CountdownProps {
   countdownDivRef: React.RefObject<HTMLDivElement>
 }
 
 export function Countdown({ countdownDivRef }: CountdownProps) {
-  const { countdown, finishCountdown } = useContext(CountdownContext)
+  const { countdown, finishCountdown, pauseCountdown, resumeCountdown, resetCountdown } = useContext(CountdownContext)
 
   const hasCountdown = countdown !== null
-  const hasActiveCountdown = hasCountdown && countdown.hasActiveCountdown
 
-  const [minutesAmount, setMinutesAmount] = useState<number>(0)
-  const [secondsAmount, setSecondsAmount] = useState<number>(0)
+  const [remainingTime, setRemainingTime] = useState({ minutesAmount: 0, secondsAmount: 0 })
+
+  function handleResetCountdown() {
+    resetCountdown()
+  }
+
+  function handlePauseCountdown() {
+    pauseCountdown()
+  }
+
+  function handleResumeCountdown() {
+    resumeCountdown()
+  }
+
+  function handleStopCountdown() {
+    finishCountdown()
+  }
 
   useEffect(() => {
-    if (hasActiveCountdown === true && countdown.countdown !== null) {
-      const countdownOn = countdown.countdown
+    if (!hasCountdown) return
 
-      setMinutesAmount(minutesAmount)
-      setSecondsAmount(secondsAmount)
+    let interval: NodeJS.Timeout
 
-      const interval = setInterval(() => {
-        const now = new Date().getTime()
-        const distance = new Date(countdownOn.startDate).getTime() + countdownOn.totalSeconds * 1000 - now
+    if (countdown.status === 'paused') {
+      setRemainingTime(getTimers(countdown))
+      return () => clearInterval(interval)
+    }
 
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000)
-        // console.log('minutes', minutes, 'seconds', seconds)
-        setMinutesAmount(minutes)
-        setSecondsAmount(seconds)
+    if (countdown.status === 'running') {
+      interval = setInterval(() => {
+        setRemainingTime(getTimers(countdown))
 
-        const diff = now - new Date(countdownOn.startDate).getTime()
+        const diffInSeconds = differenceInSeconds(Date.now(), countdown.startDate.getTime())
 
-        if (diff >= countdownOn.totalSeconds * 1000) {
+        if (diffInSeconds > countdown.totalSeconds) {
           clearInterval(interval)
-          setMinutesAmount(0)
-          setSecondsAmount(0)
+          setRemainingTime({ minutesAmount: 0, secondsAmount: 0 })
 
           finishCountdown()
         }
       }, 1000)
     }
-  }, [minutesAmount, secondsAmount, hasActiveCountdown, countdown, finishCountdown])
+
+    return () => clearInterval(interval)
+  }, [hasCountdown, countdown, finishCountdown])
+
+  if (!hasCountdown) return null
 
   return (
     <div ref={countdownDivRef} className="w-80 lg:w-fit p-4 lg:p-8 rounded-2xl">
       <div className="flex flex-col items-center justify-center">
         <p className="text-7xl lg:text-9xl lg:h-36 flex items-center justify-center">
           {/* className="text-5xl  bg-transparent size-16 lg:size-24 text-center countdown-timers-input" */}
-          {minutesAmount.toString().padStart(2, '0')}:{secondsAmount.toString().padStart(2, '0')}
+          {remainingTime.minutesAmount.toString().padStart(2, '0')}:
+          {remainingTime.secondsAmount.toString().padStart(2, '0')}
         </p>
 
-        <button className="mt-4 p-2 lg:p-3 rounded-full border-[1px] border-[#F7CE78] hover:border-[#DEA632] dark:border-[#F7CE78]/[0.5] bg-[#FFE3A9]/[0.15] dark:bg-[#FFE3A9]/[0.25] transition-colors duration-300">
-          <Pause className="fill-[#DEA632] dark:fill-[#F7CE78] lg:size-10" />
-        </button>
+        <div className="flex items-center justify-center gap-4">
+          <button
+            onClick={handleResetCountdown}
+            className="mt-4 p-2 rounded-full border-[1px] border-[#F7CE78] hover:border-[#DEA632] dark:border-[#F7CE78]/[0.5] bg-[#FFE3A9]/[0.15] dark:bg-[#FFE3A9]/[0.25] transition-colors duration-300"
+          >
+            <ResetTimer className="fill-[#DEA632] dark:fill-[#F7CE78]" />
+          </button>
+
+          {countdown.status === 'running' ? (
+            <button
+              onClick={handlePauseCountdown}
+              className="mt-4 p-2 lg:p-3 rounded-full border-[1px] border-[#F7CE78] hover:border-[#DEA632] dark:border-[#F7CE78]/[0.5] bg-[#FFE3A9]/[0.15] dark:bg-[#FFE3A9]/[0.25] transition-colors duration-300"
+            >
+              <Pause className="fill-[#DEA632] dark:fill-[#F7CE78] lg:size-10" />
+            </button>
+          ) : (
+            <button
+              onClick={handleResumeCountdown}
+              className="mt-4 p-2 lg:p-3 rounded-full border-[1px] border-runnote-green-50 hover:border-runnote-green-300 dark:border-[#256F4C] bg-runnote-green-50/20 dark:bg-[#133929] transition-colors duration-300"
+            >
+              <Play className="fill-runnote-green-300 dark:fill-runnote-green-300 lg:size-10" />
+            </button>
+          )}
+
+          <button
+            onClick={handleStopCountdown}
+            className="mt-4 p-2 rounded-full border-[1px] border-runnote-red/50 hover:border-runnote-red dark:border-runnote-red/50 bg-runnote-red/20 dark:bg-runnote-red/30 transition-colors duration-300"
+          >
+            <Stop className="fill-runnote-red/50 dark:fill-runnote-red" />
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { useContext, useEffect, useRef } from 'react'
+import { ElementRef, useContext, useEffect, useRef } from 'react'
 
 import { Countdown } from './_components/countdown'
 import { CountdownForm } from './_components/form'
@@ -12,36 +12,26 @@ export default function CountdownPage() {
   const { countdown } = useContext(CountdownContext)
 
   const hasCountdown = countdown !== null
-  const hasActiveCountdown = hasCountdown && countdown.hasActiveCountdown
 
-  const countdownFormRef = useRef<HTMLDivElement>(null)
-  const countdownDivRef = useRef<HTMLDivElement>(null)
+  const countdownFormRef = useRef<ElementRef<'div'>>(null)
+  const countdownDivRef = useRef<ElementRef<'div'>>(null)
 
   useEffect(() => {
-    if (hasActiveCountdown === true) {
+    if (hasCountdown) {
       countdownFormRef.current?.classList.remove('countdown-open-form-animation')
-      // countdownFormRef.current?.classList.add('countdown-close-form-animation')
       countdownFormRef.current?.classList.add('hidden')
 
       countdownDivRef.current?.classList.add('countdown-open-form-animation')
-    }
-
-    if (hasCountdown === true && hasActiveCountdown === false) {
-      // countdownFormRef.current?.classList.remove('countdown-close-form-animation')
+    } else {
       countdownFormRef.current?.classList.remove('hidden')
       countdownFormRef.current?.classList.add('countdown-open-form-animation')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasActiveCountdown])
+  }, [hasCountdown])
 
   return (
     <main className={clsx(novaMono.className, 'flex flex-1 flex-col items-center justify-center p-24')}>
-      {/* {!hasActiveCountdown && <CountdownForm />}
-
-      {hasActiveCountdown && <Countdown />} */}
-
       <CountdownForm countdownFormRef={countdownFormRef} />
-      {hasActiveCountdown && <Countdown countdownDivRef={countdownDivRef} />}
+      {hasCountdown && <Countdown countdownDivRef={countdownDivRef} />}
     </main>
   )
 }

@@ -26,4 +26,20 @@ function Pause({ ...props }: IconProps) {
   )
 }
 
-export { Play, Pause }
+function ResetTimer({ ...props }: IconProps) {
+  return (
+    <Icon xmlns="http://www.w3.org/2000/svg" {...props} viewBox="0 0 256 256">
+      <path d="M236,56v48a4,4,0,0,1-4,4H184a4,4,0,0,1,0-8h37.7L187.53,68.69l-.13-.12a84,84,0,1,0-1.75,120.51,4,4,0,0,1,5.5,5.82A91.43,91.43,0,0,1,128,220h-1.26A92,92,0,1,1,193,62.84l35,32.05V56a4,4,0,1,1,8,0Z"></path>
+    </Icon>
+  )
+}
+
+function Stop({ ...props }: IconProps) {
+  return (
+    <Icon xmlns="http://www.w3.org/2000/svg" {...props} viewBox="0 0 256 256">
+      <path d="M200.73,44H55.27A11.29,11.29,0,0,0,44,55.27V200.73A11.29,11.29,0,0,0,55.27,212H200.73A11.29,11.29,0,0,0,212,200.73V55.27A11.29,11.29,0,0,0,200.73,44ZM204,200.73a3.28,3.28,0,0,1-3.27,3.27H55.27A3.28,3.28,0,0,1,52,200.73V55.27A3.28,3.28,0,0,1,55.27,52H200.73A3.28,3.28,0,0,1,204,55.27Z"></path>
+    </Icon>
+  )
+}
+
+export { Play, Pause, ResetTimer, Stop }
