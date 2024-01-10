@@ -2,7 +2,7 @@
 
 This is a application built with React using Next was created only for the purpose of studies.
 
-![Screenshot](.github/countdown-preview.png)
+![Screenshot](.github/countdown-preview.jpeg)
 
 ---
 
