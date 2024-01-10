@@ -1,15 +1,15 @@
 'use client'
 
 import clsx from 'clsx'
-import { ElementRef, useContext, useEffect, useRef } from 'react'
+import { ElementRef, useEffect, useRef } from 'react'
 
 import { Countdown } from './_components/countdown'
 import { CountdownForm } from './_components/form'
-import { CountdownContext } from './_context/countdown'
+import { useCountdown } from './_context/countdown'
 import { novaMono } from '../fonts'
 
 export default function CountdownPage() {
-  const { countdown } = useContext(CountdownContext)
+  const { countdown } = useCountdown()
 
   const hasCountdown = countdown !== null
 

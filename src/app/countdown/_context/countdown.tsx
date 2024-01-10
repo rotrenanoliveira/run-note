@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useCallback, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { differenceInSeconds } from '@/util/date'
 import { validateCountdown } from '../_util/validate-countdown-data'
 
@@ -28,7 +28,9 @@ interface CountdownContextType {
   finishCountdown: () => void
 }
 
-export const CountdownContext = createContext<CountdownContextType>({} as CountdownContextType)
+const CountdownContext = createContext<CountdownContextType>({} as CountdownContextType)
+
+export const useCountdown = () => useContext(CountdownContext)
 
 interface CountdownProviderProps {
   children: React.ReactNode

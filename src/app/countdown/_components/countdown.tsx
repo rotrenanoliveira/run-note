@@ -1,10 +1,10 @@
 'use client'
 
-import { useContext, useEffect, useState } from 'react'
-import { CountdownContext } from '../_context/countdown'
-import { Pause, Play, ResetTimer, Stop } from '@/components/ui/icons'
+import { useEffect, useState } from 'react'
+import { useCountdown } from '../_context/countdown'
 import { getTimers } from '../_util/get-timers'
 import { useNotification } from '@/context/notification'
+import { Pause, Play, ResetTimer, Stop } from '@/components/ui/icons'
 import { differenceInSeconds } from '@/util/date'
 
 interface CountdownProps {
@@ -13,7 +13,7 @@ interface CountdownProps {
 
 export function Countdown({ countdownDivRef }: CountdownProps) {
   const { sendNotification } = useNotification()
-  const { countdown, finishCountdown, pauseCountdown, resumeCountdown, resetCountdown } = useContext(CountdownContext)
+  const { countdown, finishCountdown, pauseCountdown, resumeCountdown, resetCountdown } = useCountdown()
 
   const hasCountdown = countdown !== null
 

@@ -1,7 +1,6 @@
 'use client'
 
-import { useContext } from 'react'
-import { CountdownContext } from '../_context/countdown'
+import { useCountdown } from '../_context/countdown'
 import { Play } from '@/components/ui/icons'
 
 interface CountdownFormProps {
@@ -9,7 +8,7 @@ interface CountdownFormProps {
 }
 
 export function CountdownForm({ countdownFormRef }: CountdownFormProps) {
-  const { startCountdown } = useContext(CountdownContext)
+  const { startCountdown } = useCountdown()
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
