@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import { CountdownContext } from '../_context/countdown'
 import { Pause, Play, ResetTimer, Stop } from '@/components/ui/icons'
 import { getTimers } from '../_util/get-timers'
+import { useNotification } from '@/context/notification'
 import { differenceInSeconds } from '@/util/date'
 
 interface CountdownProps {
@@ -11,6 +12,7 @@ interface CountdownProps {
 }
 
 export function Countdown({ countdownDivRef }: CountdownProps) {
+  const { sendNotification } = useNotification()
   const { countdown, finishCountdown, pauseCountdown, resumeCountdown, resetCountdown } = useContext(CountdownContext)
 
   const hasCountdown = countdown !== null
@@ -54,6 +56,7 @@ export function Countdown({ countdownDivRef }: CountdownProps) {
           setRemainingTime({ minutesAmount: 0, secondsAmount: 0 })
 
           finishCountdown()
+          sendNotification('Countdown finished!')
         }
       }, 1000)
     }
