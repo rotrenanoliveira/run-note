@@ -16,6 +16,18 @@
   }
 }
 
+html[data-theme=light] {
+  --foreground-rgb: 29, 29, 29;
+  --background-start-rgb: 251, 251, 251;
+  --background-end-rgb: 235, 237, 238;
+}
+
+html[data-theme=dark] {
+  --foreground-rgb: 252, 252, 252;
+  --background-start-rgb: 29, 29, 29;
+  --background-end-rgb: 17, 19, 21;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
