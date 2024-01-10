@@ -56,7 +56,7 @@ export function Countdown({ countdownDivRef }: CountdownProps) {
           setRemainingTime({ minutesAmount: 0, secondsAmount: 0 })
 
           finishCountdown()
-          sendNotification('Countdown finished!')
+          sendNotification('runnout | Countdown', 'Countdown finished!')
         }
       }, 1000)
     }
