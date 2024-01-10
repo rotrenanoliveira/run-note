@@ -1,10 +1,8 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 
-const isServer = typeof window === 'undefined'
-
 interface NotificationProps {
   // Function to trigger a native browser notification
-  sendNotification: (message: string) => void
+  sendNotification: (title: string, message: string) => void
 }
 
 interface NotificationProviderProps {
@@ -19,29 +17,31 @@ export const useNotification = () => useContext(NotificationContext)
 
 // Component to provide notification context to its children
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }: NotificationProviderProps) => {
-  // Determine the current permission status for notifications
-  const permission = isServer ? null : Notification.permission
-
   // Function to send a notification if permission is granted
-  const sendNotification = useCallback(
-    (message: string) => {
-      if (permission === 'granted') {
-        // eslint-disable-next-line no-new
-        new Notification(message)
-      }
-    },
-    [permission],
-  )
+  const sendNotification = useCallback((title: string, message: string) => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      // eslint-disable-next-line no-new
+      new Notification(title, {
+        body: message,
+        icon: '/icon.png',
+      })
+    }
+  }, [])
+
+  const requestNotificationPermission = useCallback(() => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Permission granted')
+        }
+      })
+    }
+  }, [])
 
   // Effect to request permission when component mounts
   useEffect(() => {
-    if (isServer) return
-    if (!('Notification' in window)) return
-
-    if (permission !== 'granted' && permission !== 'denied') {
-      Notification.requestPermission()
-    }
-  }, [])
+    if ('Notification' in window) requestNotificationPermission()
+  }, [requestNotificationPermission])
 
   // Providing the sendNotification function via context
   return <NotificationContext.Provider value={{ sendNotification }}>{children}</NotificationContext.Provider>
